@@ -1,8 +1,11 @@
 <?php
-
 /*
 Plugin Name: First of April
 */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 use FOA\App;
 

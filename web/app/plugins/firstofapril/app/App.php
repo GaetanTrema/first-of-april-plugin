@@ -3,6 +3,7 @@
 namespace FOA;
 
 class App {
+    
     public static function init() {
         add_action('wp_enqueue_scripts', [__CLASS__, 'onEnqueueScripts']);
         add_action('wp_footer', [__CLASS__, 'onFooter']);
