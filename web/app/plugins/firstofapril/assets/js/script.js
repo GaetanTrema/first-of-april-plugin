@@ -37,8 +37,8 @@ function jumpTo(selector, x, y) {
     {
         rotation: 360,
         opacity: 1, 
-        y: y, 
         x: x, 
+        y: y, 
         duration: 0.5, 
         overwrite: true 
     });

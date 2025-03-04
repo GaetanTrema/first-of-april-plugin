@@ -3,6 +3,7 @@
 namespace FOA;
 
 use FOA\PostType\Character;
+use FOA\Render\Image;
 
 class App {
 
@@ -35,7 +36,7 @@ class App {
      * @return void
      */
     public static function onFooter() {
-        echo '<img src="http://localhost:8093/app/uploads/2025/02/1444x920_monde-jamy-removebg-preview-1.png" class="first-of-april" id="jamy">';
-        echo '<img src="http://localhost:8093/app/uploads/2025/03/pngimg.com-chuck_norris_PNG14.png" class="first-of-april" id="chuck">';
+        Image::render(18, 'jamy');
+        Image::render(17, 'chuck');
     }
 }
