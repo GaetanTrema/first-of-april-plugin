@@ -3,7 +3,7 @@
 namespace FOA;
 
 class App {
-    
+
     public static function init() {
         add_action('wp_enqueue_scripts', [__CLASS__, 'onEnqueueScripts']);
         add_action('wp_footer', [__CLASS__, 'onFooter']);
@@ -23,6 +23,7 @@ class App {
      * @return void
      */
     public static function onFooter() {
-        echo '<img src="http://localhost:8093/app/uploads/2025/02/1444x920_monde-jamy-removebg-preview-1.png" id="jamy">';
+        echo '<img src="http://localhost:8093/app/uploads/2025/02/1444x920_monde-jamy-removebg-preview-1.png" class="first-of-april" id="jamy">';
+        echo '<img src="http://localhost:8093/app/uploads/2025/03/pngimg.com-chuck_norris_PNG14.png" class="first-of-april" id="chuck">';
     }
 }
