@@ -29,7 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function jumpTo(selector, x, y) {
-    gsap.to(selector,{
+
+    gsap.fromTo(selector,
+    {
+        rotation: 0
+    },
+    {
+        rotation: 360,
         opacity: 1, 
         y: y, 
         x: x, 
@@ -39,7 +45,12 @@ function jumpTo(selector, x, y) {
 }
 
 function disappearRandom(selector) {
-    gsap.to(selector, { 
+    gsap.fromTo(selector, 
+    {
+        rotation: 360
+    },
+    { 
+        rotation: 0,
         y: window.innerHeight, 
         x: Math.random() * window.innerWidth, 
         delay: 0.5,

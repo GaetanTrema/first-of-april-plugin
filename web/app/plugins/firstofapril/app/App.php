@@ -2,11 +2,23 @@
 
 namespace FOA;
 
+use FOA\PostType\Character;
+
 class App {
 
     public static function init() {
+        add_action('init', [__CLASS__, 'onInit']);
         add_action('wp_enqueue_scripts', [__CLASS__, 'onEnqueueScripts']);
         add_action('wp_footer', [__CLASS__, 'onFooter']);
+
+    }
+
+    /**
+     * Trigger actions on init
+     * @return void
+     */
+    public static function onInit() {
+        Character::register();
     }
 
     /**
