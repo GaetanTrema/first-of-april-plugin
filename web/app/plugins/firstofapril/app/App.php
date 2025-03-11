@@ -12,10 +12,12 @@ class App {
         'form-input-focus' => 0,
     ];
 
-    public static function init() {
+    public static function init()
+    {
         add_action('init', [__CLASS__, 'onInit']);
         add_action('wp_enqueue_scripts', [__CLASS__, 'onEnqueueScripts']);
         add_action('wp_footer', [__CLASS__, 'onFooter']);
+        add_action('add_meta_boxes', [__CLASS__, 'onAddMetaBoxes']);
 
         register_activation_hook(
             FOA_PLUGIN_FILE,
@@ -23,7 +25,8 @@ class App {
         );
     }
 
-    public static function onActivation() {
+    public static function onActivation()
+    {
         add_option('foa_interaction_list', self::DEFAULT_INTERACTION_LIST);
         flush_rewrite_rules();
     }
@@ -32,14 +35,16 @@ class App {
      * Trigger actions on init
      * @return void
      */
-    public static function onInit() {
+    public static function onInit()
+    {
         Character::register();
     }
 
     /**
      * Enqueue scripts and styles
      */
-    public static function onEnqueueScripts() {
+    public static function onEnqueueScripts()
+    {
         wp_enqueue_style('foa-style', plugin_dir_url(__FILE__) . '../assets/css/style.css');
         wp_enqueue_script('gsap', "https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js", []);
         wp_enqueue_script('foa-script', plugin_dir_url(__FILE__) . '../assets/js/script.js',['gsap'], false, [ 'in_footer' => true ]);
@@ -49,11 +54,39 @@ class App {
      * Trigger actions before footer is rendered
      * @return void
      */
-    public static function onFooter() {
+    public static function onFooter()
+    {
         // TODO: get character id dynamically
         // render character for each interaction
         foreach (get_option('foa_interaction_list') as $interaction => $characterId) {
             Image::render($characterId, $interaction);
         }
+    }
+
+    /**
+     * Trigger actions on add meta boxes
+     * @return void
+     */
+    public static function onAddMetaBoxes()
+    {
+        add_meta_box(
+            'foa-interaction-list',
+            'Interaction List',
+            [__CLASS__, 'renderInteractionList'],
+            Character::KEY,
+            'normal',
+            'default'
+        );
+    }
+
+    /**
+     * Render interaction list meta box
+     * @return void
+     */
+    public static function renderInteractionList()
+    {
+        global $post;
+        $interactionList = get_option('foa_interaction_list');
+        require FOA_PLUGIN_DIR . 'templates/interaction-list.php';
     }
 }
