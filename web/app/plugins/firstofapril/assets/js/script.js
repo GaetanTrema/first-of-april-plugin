@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('a');
     links.forEach(link => {
         link.addEventListener('mouseenter', function(e) {
-           jumpTo("#jamy", e.clientX, e.clientY);
+           jumpTo("#link-hover", e.clientX, e.clientY);
         });
 
         link.addEventListener('mouseleave', function(e) {
-            disappearRandom("#jamy");
+            disappearRandom("#link-hover");
         });
     });
 
@@ -15,14 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
     formInputs.forEach(input => {
         input.addEventListener('focus', function(e) {
             jumpTo(
-                "#chuck",
+                "#form-input-focus",
                 input.getBoundingClientRect().top,
                 input.getBoundingClientRect().left
             );
         });
 
         input.addEventListener('blur', function(e) {
-            disappearRandom("#chuck");
+            disappearRandom("#form-input-focus");
         });
     });
 

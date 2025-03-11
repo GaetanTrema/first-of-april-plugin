@@ -7,11 +7,25 @@ use FOA\Render\Image;
 
 class App {
 
+    public const DEFAULT_INTERACTION_LIST = [
+        'link-hover' => 0,
+        'form-input-focus' => 0,
+    ];
+
     public static function init() {
         add_action('init', [__CLASS__, 'onInit']);
         add_action('wp_enqueue_scripts', [__CLASS__, 'onEnqueueScripts']);
         add_action('wp_footer', [__CLASS__, 'onFooter']);
 
+        register_activation_hook(
+            FOA_PLUGIN_FILE,
+            [__CLASS__, 'onActivation']
+        );
+    }
+
+    public static function onActivation() {
+        add_option('foa_interaction_list', self::DEFAULT_INTERACTION_LIST);
+        flush_rewrite_rules();
     }
 
     /**
@@ -36,7 +50,10 @@ class App {
      * @return void
      */
     public static function onFooter() {
-        Image::render(18, 'jamy');
-        Image::render(17, 'chuck');
+        // TODO: get character id dynamically
+        // render character for each interaction
+        foreach (get_option('foa_interaction_list') as $interaction => $characterId) {
+            Image::render($characterId, $interaction);
+        }
     }
 }
