@@ -1,5 +1,5 @@
 <div>
-    <select id="foa-interaction-list" name="foa_interaction_list">
+    <select id="foa-interaction-list" name="<?= FOA\App::INTERACTION_LIST_OPTION ?>">
     <?php
     foreach ($interactionList as $interaction => $characterId) {
         $selected = in_array($post->ID, $interactionList) ? 'selected' : '';

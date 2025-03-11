@@ -12,12 +12,15 @@ class App {
         'form-input-focus' => 0,
     ];
 
+    public const INTERACTION_LIST_OPTION = 'foa_interaction_list';
+
     public static function init()
     {
         add_action('init', [__CLASS__, 'onInit']);
         add_action('wp_enqueue_scripts', [__CLASS__, 'onEnqueueScripts']);
         add_action('wp_footer', [__CLASS__, 'onFooter']);
         add_action('add_meta_boxes', [__CLASS__, 'onAddMetaBoxes']);
+        add_action('save_post', [__CLASS__, 'onSavePost']);
 
         register_activation_hook(
             FOA_PLUGIN_FILE,
@@ -27,7 +30,7 @@ class App {
 
     public static function onActivation()
     {
-        add_option('foa_interaction_list', self::DEFAULT_INTERACTION_LIST);
+        add_option(self::INTERACTION_LIST_OPTION, self::DEFAULT_INTERACTION_LIST);
         flush_rewrite_rules();
     }
 
@@ -58,7 +61,7 @@ class App {
     {
         // TODO: get character id dynamically
         // render character for each interaction
-        foreach (get_option('foa_interaction_list') as $interaction => $characterId) {
+        foreach (get_option(self::INTERACTION_LIST_OPTION) as $interaction => $characterId) {
             Image::render($characterId, $interaction);
         }
     }
@@ -86,7 +89,33 @@ class App {
     public static function renderInteractionList()
     {
         global $post;
-        $interactionList = get_option('foa_interaction_list');
+        $interactionList = get_option(self::INTERACTION_LIST_OPTION);
         require FOA_PLUGIN_DIR . 'templates/interaction-list.php';
+    }
+
+    /**
+     * Trigger actions on save post
+     * @param int $postId
+     * @return void
+     */
+    public static function onSavePost($postId)
+    {
+        if (array_key_exists(self::INTERACTION_LIST_OPTION, $_POST)) {
+            $interactionList = get_option(self::INTERACTION_LIST_OPTION);
+
+            // s'assurer que le personnage n'est associé à aucune autre interaction
+            // s'assurer que l'interaction n'est associée à aucun autre personnage
+            foreach ($interactionList as $interaction => $characterId) {
+                if ($characterId == $postId) {
+                    $interactionList[$interaction] = 0;
+                }
+                if ($interaction == $_POST[self::INTERACTION_LIST_OPTION]) {
+                    $interactionList[$interaction] = 0;
+                }
+            }
+
+            $interactionList[$_POST[self::INTERACTION_LIST_OPTION]] = $postId;
+            update_option(self::INTERACTION_LIST_OPTION, $interactionList);
+        }
     }
 }
