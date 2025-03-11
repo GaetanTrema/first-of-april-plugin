@@ -59,7 +59,6 @@ class App {
      */
     public static function onFooter()
     {
-        // TODO: get character id dynamically
         // render character for each interaction
         foreach (get_option(self::INTERACTION_LIST_OPTION) as $interaction => $characterId) {
             Image::render($characterId, $interaction);
